@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>실시간 라이브 뷰</title>
+  <link rel="stylesheet" href="/style.css">
+  <!-- <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem 2rem;
+    }
+    nav a {
+      color: white;
+      margin-right: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    main {
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .video-box {
+      width: 100%;
+      height: 300px;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      border-radius: 8px;
+      font-size: 1.2rem;
+    }
+    .time-display {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #333;
+      background: #f0f0f0;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .ai-result-box {
+      background-color: #f9f9f9;
+      border: 1px dashed #bbb;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 6px;
+    }
+    .ai-result-item {
+      margin-bottom: 0.5rem;
+    }
+  </style> -->
+</head>
+<body>
+
+  <header>
+    <h1>📺 실시간 라이브 뷰</h1>
+    <nav>
+      <a href="index.html">대시보드</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>📷 카메라 영상</h2>
+      <div class="video-box">
+        [ 실시간 영상이 표시될 영역입니다 ]
+      </div>
+      <div class="time-display">
+        현재 시간: 14:28:10
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>🤖 AI 판별 결과</h2>
+      <div class="ai-result-box">
+        <div class="ai-result-item">✔️ 인식된 코드: <strong>ABC12345</strong></div>
+        <div class="ai-result-item">📌 결과: <strong>정상</strong></div>
+        <div class="ai-result-item">🕒 판별 시각: 2025-10-15 14:27:58</div>
+      </div>
+    </section>
+  </main>
+<script src="/live_view.js"></script>
+</body>
+</html>
