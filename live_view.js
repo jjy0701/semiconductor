@@ -86,7 +86,6 @@ function displayDefectLog(data) {
 
     // 새 로그 항목(div) 생성
     const newLogEntry = document.createElement('div');
-    newLogEntry.classList.add('ai-result-item'); // 기존 CSS 클래스 재활용
     newLogEntry.style.color = "#c9302c"; // 불량은 빨간색으로
     newLogEntry.style.padding = "0.5rem";
     newLogEntry.style.borderBottom = "1px solid #eee";
