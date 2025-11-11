@@ -1,0 +1,9 @@
+# 훈련 데이터와 검증(테스트) 데이터의 images 폴더 경로
+train: C:/Users/ironi/Desktop/3_2_AI/ai_Intrusion/dataset/train/images
+val: C:/Users/ironi/Desktop/3_2_AI/ai_Intrusion/dataset/test/images
+
+# ✅ 클래스 개수 (3개로 수정)
+nc: 3
+
+# ✅ 클래스 이름 (3개로 수정)
+names: ['Good', 'Surface_Defect', 'Structural_Defect']
