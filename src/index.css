@@ -1,203 +1,280 @@
+/* Tailwind CSS 기본 레이어 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-/* 전체 기본값 */
-body {
-  margin: 0;
-  font-family: 'Noto Sans KR', 'Segoe UI', sans-serif;
-  background-color: #1e272e;
-  color: #ecf0f1;
-  line-height: 1.6;
-}
-
-/* 헤더 */
-header {
-  background-color: #141d26;
-  color: #ffffff;
-  padding: 1.2rem 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-header h1 {
-  margin: 0;
-  font-size: 1.6rem;
-  font-weight: 700;
-}
-nav {
-  margin-top: 0.5rem;
-}
-nav a {
-  color: #dcdde1;
-  margin-right: 1.5rem;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-nav a:hover {
-  color: #00a8ff;
-}
-
-/* 메인 */
-main {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
-}
-
-/* 카드 스타일 */
-.card {
-  background: #2f3640;
-  padding: 1.8rem;
-  margin-bottom: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  transition: transform 0.2s ease;
-}
-.card:hover {
-  transform: translateY(-4px);
-}
-.card h2 {
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-  color: #00a8ff;
-}
-
-/* 리스트 */
-.status-list, .ai-list {
-  list-style: none;
-  padding: 0;
-}
-.status-list li, .ai-list li {
-  margin-bottom: 0.6rem;
-  font-size: 1rem;
-}
-
-/* 차트 영역 */
-.chart-box {
-  width: 100%;
-  height: 240px;
-  background: linear-gradient(135deg, #3742fa, #70a1ff);
-  border-radius: 10px;
-  color: white;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
-
-/* 링크 버튼 */
-.link-list a {
-  display: inline-block;
-  background-color: #00a8ff;
-  color: white;
-  padding: 0.6rem 1.3rem;
-  border-radius: 8px;
-  text-decoration: none;
-  margin: 0.4rem 1rem 0 0;
-  font-weight: 600;
-  transition: background-color 0.2s ease;
-}
-.link-list a:hover {
-  background-color: #0097e6;
-}
-
-/* Live View - 영상 박스 */
-.video-box {
-  width: 100%;
-  height: 300px;
-  background-color: #576574;
-  border: 2px dashed #dcdde1;
-  border-radius: 12px;
-  color: #f1f2f6;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 시간 표시 박스 */
-.time-display {
-  margin-top: 1rem;
-  background: #2c3e50;
-  padding: 0.6rem 1.2rem;
-  border-left: 4px solid #00a8ff;
-  border-radius: 6px;
-  display: inline-block;
-  font-weight: 500;
-}
-
-/* AI 판별 결과 */
-.ai-result-box {
-  background-color: #353b48;
-  border-left: 4px solid #00a8ff;
-  padding: 1rem;
-  margin-top: 1rem;
-  border-radius: 10px;
-}
-.ai-result-item {
-  margin-bottom: 0.7rem;
-  font-size: 1rem;
-  color: #f5f6fa;
-}
-
-/* 반응형 */
-@media (max-width: 768px) {
-  main {
-    padding: 1rem;
+/* 전역 스타일 - 밝은 테마 */
+@layer base {
+  * {
+    @apply border-gray-200;
   }
+  
+  body {
+    @apply m-0 bg-white text-gray-800 font-sans antialiased;
+    line-height: 1.6;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* 스크롤바 커스터마이징 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+}
+
+/* 컴포넌트 레이어 - 재사용 가능한 클래스 */
+@layer components {
+  /* 카드 스타일 */
   .card {
-    padding: 1rem;
+    @apply bg-white rounded-xl p-6 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 border border-gray-200;
   }
-  nav a {
-    display: inline-block;
-    margin: 0.3rem 1rem 0 0;
+
+  .card-title {
+    @apply text-xl font-bold mb-4 text-primary-600 flex items-center gap-2;
+  }
+
+  /* 버튼 스타일 */
+  .btn {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-400 shadow-md hover:shadow-glow-green;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-400 border border-gray-300;
+  }
+
+  .btn-success {
+    @apply btn bg-status-normal text-white hover:bg-green-600 focus:ring-status-normal shadow-md;
+  }
+
+  .btn-danger {
+    @apply btn bg-status-error text-white hover:bg-red-600 focus:ring-status-error shadow-md;
+  }
+
+  /* 배지 스타일 */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 text-green-700 border border-green-300;
+  }
+
+  .badge-error {
+    @apply badge bg-red-100 text-red-700 border border-red-300;
+  }
+
+  .badge-warning {
+    @apply badge bg-orange-100 text-orange-700 border border-orange-300;
+  }
+
+  .badge-info {
+    @apply badge bg-blue-100 text-blue-700 border border-blue-300;
+  }
+
+  /* 입력 필드 */
+  .input {
+    @apply w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-colors;
+  }
+
+  /* 상태 표시 점 */
+  .status-dot {
+    @apply w-3 h-3 rounded-full animate-pulse-slow;
+  }
+
+  .status-dot-success {
+    @apply status-dot bg-status-normal shadow-glow-green;
+  }
+
+  .status-dot-error {
+    @apply status-dot bg-status-error shadow-glow-red;
+  }
+
+  .status-dot-warning {
+    @apply status-dot bg-status-warning;
+  }
+
+  /* 링크 스타일 */
+  .nav-link {
+    @apply text-gray-600 hover:text-primary-600 transition-colors duration-200 font-medium;
+  }
+
+  .nav-link-active {
+    @apply text-primary-600 font-semibold;
+  }
+
+  /* 그리드 레이아웃 */
+  .grid-dashboard {
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6;
+  }
+
+  /* 데이터 리스트 */
+  .data-list {
+    @apply space-y-3;
+  }
+
+  .data-list-item {
+    @apply flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0;
+  }
+
+  /* 차트 컨테이너 */
+  .chart-container {
+    @apply w-full h-64 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg;
+  }
+
+  /* 비디오/이미지 박스 */
+  .media-box {
+    @apply w-full h-72 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-gray-500 text-lg transition-all duration-300;
+  }
+
+  .media-box-connected {
+    @apply media-box bg-green-50 border-status-normal text-status-normal;
+  }
+
+  .media-box-error {
+    @apply media-box bg-red-50 border-status-error text-status-error;
+  }
+
+  /* AI 결과 박스 */
+  .ai-result-box {
+    @apply bg-white border-l-4 border-primary-500 rounded-lg p-4 space-y-2 max-h-96 overflow-y-auto shadow-sm;
+  }
+
+  .ai-result-item {
+    @apply bg-gray-50 rounded-lg p-3 border-l-2 animate-fade-in;
+  }
+
+  .ai-result-item-defect {
+    @apply ai-result-item border-status-error bg-red-50;
+  }
+
+  .ai-result-item-normal {
+    @apply ai-result-item border-status-normal bg-green-50;
+  }
+
+  /* 시간 표시 */
+  .time-display {
+    @apply inline-block bg-white border-l-4 border-primary-500 rounded-lg px-4 py-2 font-mono font-medium text-sm shadow-md;
+  }
+
+  /* 헤더 스타일 */
+  .header {
+    @apply bg-white shadow-md border-b border-gray-200 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95;
+  }
+
+  /* 섹션 헤더 */
+  .section-header {
+    @apply flex items-center justify-between mb-6 pb-3 border-b border-gray-200;
+  }
+
+  /* 로딩 스피너 */
+  .spinner {
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-primary-500;
+  }
+
+  /* 통계 카드 */
+  .stat-card {
+    @apply card flex flex-col items-center text-center;
+  }
+
+  .stat-value {
+    @apply text-4xl font-bold bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent;
+  }
+
+  .stat-label {
+    @apply text-sm text-gray-500 mt-2;
+  }
+
+  /* 알림/토스트 */
+  .alert {
+    @apply rounded-lg p-4 mb-4 flex items-start gap-3 animate-slide-down;
+  }
+
+  .alert-success {
+    @apply alert bg-green-50 border border-status-normal text-green-800;
+  }
+
+  .alert-error {
+    @apply alert bg-red-50 border border-status-error text-red-800;
+  }
+
+  .alert-warning {
+    @apply alert bg-orange-50 border border-status-warning text-orange-800;
+  }
+
+  .alert-info {
+    @apply alert bg-blue-50 border border-status-info text-blue-800;
   }
 }
 
-/* ▼▼▼ [추가] 이 코드를 src/index.css 맨 아래에 붙여넣으세요 ▼▼▼ */
+/* 유틸리티 레이어 - 추가 유틸리티 */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-/* 1. video-box가 img를 제대로 감싸도록 수정 */
-.video-box {
-  padding: 0; /* 내부 여백 제거 */
-  overflow: hidden; /* 박스 밖으로 영상이 튀어나가지 않게 */
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .bg-blur {
+    backdrop-filter: blur(10px);
+  }
+
+  /* 그라데이션 텍스트 */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent;
+  }
+
+  /* 애니메이션 딜레이 */
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
   
-  /* 기존 flex 관련 속성 제거 (img가 직접 들어가므로) */
-  display: block; 
-  align-items: normal;
-  justify-content: normal;
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
   
-  /* (선택) 고정 높이를 없애고 비율에 맞게 조절 */
-  /* height: 300px;  <-- 이 줄을 주석 처리(#)하거나 삭제 */
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  /* 반응형 숨김/표시 */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-/* 2. img 태그가 video-box에 꽉 차도록 설정 */
-.video-box img {
-  width: 100%;     /* 너비를 부모(video-box)에 100% 맞춤 */
-  height: auto;    /* 높이는 영상 비율에 맞게 자동 조절 */
-  display: block;  /* 이미지 아래쪽의 불필요한 여백 제거 */
-  
-  /* (선택) 영상이 찌그러지지 않고 꽉 차게 (좌우가 잘릴 수 있음) */
-  /* object-fit: cover; */ 
-}
+/* 프린트 스타일 */
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
 
-/* ▼▼▼ [수정] 이 코드를 src/index.css 맨 아래에 붙여넣으세요 ▼▼▼ */
-
-/* .video-box (flex 컨테이너) 안의 img 태그가
-  부모 박스를 벗어나지 않고, 비율을 유지하며,
-  가운데 정렬되도록 합니다.
-*/
-/* ▼▼▼ [수정] 이 코드를 src/index.css 맨 아래에 붙여넣으세요 ▼▼▼ */
-
-.video-box img {
-  /* 크기 조절 (기존과 동일) */
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  
-  /* [추가] flex 컨테이너 안에서 상하좌우 중앙 정렬 */
-  margin: auto; 
+  .no-print {
+    display: none !important;
+  }
 }

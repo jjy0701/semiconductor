@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>실시간 모니터링 - 반도체 시스템</title>
+  <link rel="stylesheet" href="/src/index.css">
+  <!-- WebSocket 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body class="min-h-screen">
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gradient flex items-center gap-2">
+            <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            실시간 공정 모니터링
+          </h1>
+        </div>
+        <nav class="flex items-center gap-6">
+          <a href="/" class="nav-link">대시보드</a>
+          <a href="/live_view.html" class="nav-link-active">실시간 모니터링</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 컨텐츠 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- 시간 표시 -->
+    <div class="mb-6 flex items-center justify-between animate-fade-in">
+      <div class="time-display flex items-center gap-3">
+        <svg class="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span class="time-display-text">현재 시간: --:--:--</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="status-dot-success" id="connection-indicator"></span>
+        <span class="text-sm text-gray-600" id="connection-status">연결 대기 중...</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- 실시간 카메라 영상 -->
+      <div class="card animate-fade-in">
+        <h2 class="card-title mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          공정 카메라 피드
+        </h2>
+        
+        <!-- 비디오 박스 -->
+        <div class="video-box group" id="video-container">
+          <div class="text-center">
+            <div class="spinner w-12 h-12 mx-auto mb-4"></div>
+            <p class="text-lg">카메라 연결 중...</p>
+            <p class="text-sm text-gray-400 mt-2">서버와 연결을 시도하고 있습니다</p>
+          </div>
+        </div>
+
+        <!-- 컨트롤 버튼 -->
+        <div class="mt-4 flex gap-3">
+          <button class="btn-secondary flex-1" onclick="reconnectWebSocket()">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            재연결
+          </button>
+        </div>
+      </div>
+
+      <!-- AI 실시간 판별 결과 -->
+      <div class="card animate-fade-in animation-delay-100">
+        <div class="section-header">
+          <h2 class="card-title">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+            AI 품질 판별 로그
+          </h2>
+          <button class="btn-secondary text-xs" onclick="clearLogs()">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+            로그 지우기
+          </button>
+        </div>
+
+        <!-- AI 결과 박스 -->
+        <div class="ai-result-box" id="ai-result-container">
+          <div class="text-center text-gray-400 py-8">
+            <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <p class="text-sm">AI 판별 결과를 기다리는 중...</p>
+            <p class="text-xs text-gray-500 mt-2">실시간으로 불량 감지 시 로그가 표시됩니다</p>
+          </div>
+        </div>
+
+        <!-- 통계 요약 -->
+        <div class="mt-4 grid grid-cols-3 gap-3">
+          <div class="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
+            <div class="text-2xl font-bold text-status-normal" id="total-normal">0</div>
+            <div class="text-xs text-gray-500 mt-1">정상</div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
+            <div class="text-2xl font-bold text-status-error" id="total-defect">0</div>
+            <div class="text-xs text-gray-500 mt-1">불량</div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
+            <div class="text-2xl font-bold text-primary-600" id="total-rate">0%</div>
+            <div class="text-xs text-gray-500 mt-1">불량률</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 최근 감지 항목 -->
+    <div class="card animate-fade-in animation-delay-200">
+      <h2 class="card-title mb-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        최근 불량 감지 내역
+      </h2>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="border-b border-gray-200 bg-gray-50">
+            <tr>
+              <th class="py-3 px-4 text-sm font-semibold text-gray-600">시간</th>
+              <th class="py-3 px-4 text-sm font-semibold text-gray-600">라인 ID</th>
+              <th class="py-3 px-4 text-sm font-semibold text-gray-600">불량 유형</th>
+              <th class="py-3 px-4 text-sm font-semibold text-gray-600">신뢰도</th>
+              <th class="py-3 px-4 text-sm font-semibold text-gray-600">상태</th>
+            </tr>
+          </thead>
+          <tbody id="defect-table-body" class="divide-y divide-gray-200">
+            <tr>
+              <td colspan="5" class="py-8 text-center text-gray-400 text-sm">
+                아직 불량 감지 내역이 없습니다
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- JavaScript -->
+  <script type="module" src="/src/live_view.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
-\<!DOCTYPE html>
-<html lang="ko">
+<!DOCTYPE html>
+<html lang="ko" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-2xl font-bold text-gradient flex items-center gap-2">
-            <svg class="w-8 h-8 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
               <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/>
               <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"/>
               <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"/>
@@ -22,8 +22,9 @@
           </h1>
         </div>
         <nav class="flex items-center gap-6">
-          <a href="/" class="nav-link-active">대시보드</a>
-          <a href="/live_view.html" class="nav-link">실시간 모니터링</a>
+          <a href="dashboard.html" class="nav-link-active">대시보드</a>
+          <a href="live_view.html" class="nav-link">실시간 모니터링</a>
+          <a href="#" class="nav-link">설정</a>
         </nav>
       </div>
     </div>
@@ -43,15 +44,15 @@
         </h2>
         <div class="flex items-center gap-2">
           <span class="status-dot-success"></span>
-          <span class="text-sm text-gray-500">연결됨</span>
+          <span class="text-sm text-gray-400">연결됨</span>
         </div>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- 생산 라인 상태 -->
         <div class="stat-card">
-          <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-4">
-            <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-16 h-16 bg-primary-500/20 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
             </svg>
           </div>
@@ -61,8 +62,8 @@
 
         <!-- 이상 감지 -->
         <div class="stat-card">
-          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-16 h-16 bg-status-normal/20 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-status-normal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
@@ -72,18 +73,18 @@
 
         <!-- 최근 업데이트 -->
         <div class="stat-card">
-          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
-          <div class="text-2xl font-bold text-blue-600 font-mono" id="update-time-value">--:--:--</div>
+          <div class="text-2xl font-bold text-purple-400 font-mono" id="update-time-value">--:--:--</div>
           <div class="stat-label">최근 업데이트</div>
         </div>
       </div>
 
       <!-- 상세 정보 리스트 -->
-      <div class="mt-6 bg-gray-50 rounded-lg p-4 border border-gray-200">
+      <div class="mt-6 bg-dark-hover rounded-lg p-4">
         <ul class="status-list data-list"></ul>
       </div>
     </div>
@@ -99,35 +100,49 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- 정상/불량 카운트 -->
-        <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+        <div class="bg-dark-hover rounded-lg p-6">
           <div class="flex items-center justify-between mb-4">
-            <span class="text-gray-600">정상 제품</span>
+            <span class="text-gray-400">정상 제품</span>
             <span class="badge-success" id="normal-count">0건</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-gray-600">불량 제품</span>
+            <span class="text-gray-400">불량 제품</span>
             <span class="badge-error" id="defect-count">0건</span>
           </div>
         </div>
 
         <!-- 불량률 게이지 -->
-        <div class="bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center border border-gray-200">
+        <div class="bg-dark-hover rounded-lg p-6 flex flex-col items-center justify-center">
           <div class="text-5xl font-bold mb-2" id="defect-rate">0.0%</div>
-          <div class="text-gray-600 text-sm">불량률</div>
-          <div class="w-full bg-gray-200 rounded-full h-2 mt-4">
+          <div class="text-gray-400 text-sm">불량률</div>
+          <div class="w-full bg-dark-bg rounded-full h-2 mt-4">
             <div class="bg-gradient-to-r from-status-normal to-status-error h-2 rounded-full transition-all duration-500" id="defect-rate-bar" style="width: 0%"></div>
           </div>
         </div>
       </div>
 
       <!-- 상세 정보 리스트 -->
-      <div class="mt-6 bg-gray-50 rounded-lg p-4 border border-gray-200">
+      <div class="mt-6 bg-dark-hover rounded-lg p-4">
         <ul class="ai-list data-list"></ul>
       </div>
     </div>
 
-    <!-- 빠른 링크 -->
+    <!-- 실시간 차트 카드 -->
     <div class="card animate-fade-in animation-delay-200">
+      <h2 class="card-title">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        생산량 추이 차트
+      </h2>
+      
+      <div class="chart-box">
+        📊 Chart.js 또는 다른 차트 라이브러리로 실시간 데이터 표시
+      </div>
+    </div>
+
+    <!-- 빠른 링크 -->
+    <div class="card animate-fade-in animation-delay-300">
       <h2 class="card-title">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
@@ -136,11 +151,30 @@
       </h2>
       
       <div class="flex flex-wrap gap-3">
-        <a href="/live_view.html" class="btn-primary">
+        <a href="live_view.html" class="btn-primary">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
           </svg>
           실시간 카메라
+        </a>
+        <a href="#" class="btn-secondary">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          데이터 분석
+        </a>
+        <a href="#" class="btn-secondary">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          시스템 설정
+        </a>
+        <a href="#" class="btn-secondary">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          리포트 다운로드
         </a>
       </div>
     </div>
